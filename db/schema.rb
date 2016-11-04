@@ -20,5 +20,4 @@ ActiveRecord::Schema.define(version: 20161109015354) do
     t.string   "password_digest"
     t.string   "remember_digest"
   end
-
 end
