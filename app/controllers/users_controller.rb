@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, except: [:create, :show, :new]
+  before_action :logged_in_user, except: [:show, :new, :create]
   before_action :find_user, except: [:new, :create, :index]
   before_action :correct_user, only: [:edit, :update]
   before_action :admin_user, only: :destroy
@@ -10,10 +10,9 @@ class UsersController < ApplicationController
   end
 
   def show
-    if @user.nil?
-      flash[:success] = "Not found ID" 
-      redirect_to root_path
-    end
+    relationship = current_user.active_relationships
+      .find_by followed_id: @user.id
+    @relationship = relationship || current_user.active_relationships.build
     @microposts = @user.microposts.order_by_created_at.paginate page: params[:page]
   end
 
